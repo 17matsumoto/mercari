@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- css -->
+<link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+	rel="stylesheet"
+	integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+	crossorigin="anonymous" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous" />
+<link rel="stylesheet" href="./mercari.css" />
+<!-- script -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+
+<title>商品</title>
+<style>
+.content {
+	display:none;
+}
+</style>
+</head>
+<body>
+
+	<!-- navbar -->
+	<nav class="navbar navbar-inverse">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+				aria-controls="navbar">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="./list.html">Rakus Items</a>
+		</div>
+		<div id="navbar" class="collapse navbar-collapse">
+			<div>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a id="logout" href="./login.html">Logout&nbsp;<i
+							class="fa fa-power-off"></i></a></li>
+				</ul>
+				<p class="navbar-text navbar-right">
+					<span id="loginName">user: userName</span>
+				</p>
+			</div>
+		</div>
+	</nav>
+
+	<!-- details -->
+	<div class="container">
+		<button type="button" class="btn btn-default" id="btn">
+			<i class="fa fa-reply"></i>back
+		</button>
+
+		<script>
+			document.getElementById("btn").addEventListener('click',
+					function() {
+						history.back();
+					})
+		</script>
+		<div id="content" class="content">
+			<p></p>
+		</div>
+		<div class="table-responsive">
+			<!-- 大カテゴリー一覧画面 -->
+			<table class="table table-hover table-condensed">
+				<thead>
+					<tr>
+						<th>カテゴリー</th>
+					</tr>
+				</thead>
+				<tbody th:each="bigCategory : ${bigCategoryList}">
+					<tr onclick="button1_click()">
+
+						<td><a
+							th:href="@{/showMediamCategory?bigCategoryId=} + ${bigCategory.id}">
+								<span th:text="${bigCategory.name}"></span>
+						</a></td>
+
+					</tr>
+
+				</tbody>
+			</table>
+			<!-- 中カテゴリー一覧画面 -->
+			<table class="table table-hover">
+				<tbody th:each="mediamCategory : ${mediamCategoryList}">
+					<tr onclick="button1_click()">
+
+						<td><a
+							th:href="@{/showSmalCategory?mediamCategoryId=} + ${mediamCategory.id}">
+								<span th:text="${mediamCategory.name}"></span>
+						</a></td>
+
+					</tr>
+
+				</tbody>
+			</table>
+
+			<!--小カテゴリー一覧画面 -->
+			<table class="table table-hover">
+				<tbody th:each="smalCategory : ${smalCategoryList}">
+					<tr onclick="button1_click()">
+
+						<td><a
+							th:href="@{/showItemList?smalCategoryId=} + ${smalCategory.id}">
+								<span th:text="${smalCategory.name}"></span>
+						</a></td>
+
+					</tr>
+
+				</tbody>
+			</table>
+
+
+			<!-- table -->
+			<div class="table-responsive">
+				<table id="item-table" class="table table-hover table-condensed">
+					<tbody class="item_list">
+
+						<tr th:each=" item  :${itemList}">
+							<td><a
+								th:href="@{/itemDetail/showDetail?ItemId=} + ${item.id}"
+								class="item-name" th:text="${item.name}">Razer BlackWidow
+									Chroma Keyboard</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>

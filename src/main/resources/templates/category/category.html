@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- css -->
+<link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+	rel="stylesheet"
+	integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+	crossorigin="anonymous" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous" />
+<link rel="stylesheet" href="./mercari.css" />
+<!-- script -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+
+<title>Rakus Items</title>
+
+
+</head>
+<body>
+
+	<!-- navbar -->
+	<nav class="navbar navbar-inverse">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+				aria-controls="navbar">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" th:href="@{/item/top}">Rakus Items</a>
+		</div>
+		<div id="navbar" class="collapse navbar-collapse">
+			<div>
+				<ul class="nav navbar-nav navbar-right">
+					<li sec:authorize="!isAuthenticated()"><a
+						th:href="@{/login/toLogin}">Login&nbsp;</a></li>
+					<li sec:authorize="isAuthenticated()"><a th:href="@{/logout/}">Logout&nbsp;</a></li>
+				</ul>
+				<p class="navbar-text navbar-right">
+					<span sec:authorize="!isAuthenticated()">著名ユーザー</span> <span
+						sec:authorize="isAuthenticated()"><span id="loginName"
+						sec:authentication="principal.userInfo.name"></span>さんこんにちは!</span>
+
+				</p>
+			</div>
+		</div>
+	</nav>
+
+	<div id="main" class="container-fluid">
+		<!-- addItem link -->
+		<div id="addItemButton">
+			<a class="btn btn-default" th:href="@{/itemAdd/index}"><i
+				class="fa fa-plus-square-o"></i>新規カテゴリーの追加</a>
+		</div>
+
+		<br>
+		<div class="categories">
+			<a th:href="@{/category}">大カテゴリー </a> <a
+				th:href="@{/category/showMediamCategory}">中カテゴリー </a> <a
+				th:href="@{/category/showSmalCategory}">小カテゴリー</a>
+		</div>
+
+		<!-- 大カテゴリー一覧表示 -->
+		<div class="table-responsive" th:if="${bigCategoryList != null}">
+			<table id="item-table" class="table table-hover table-condensed">
+				<thead>
+					<tr>
+						<th>商品名</th>
+						<th>詳細</th>
+						<th>編集</th>
+						<th>削除</th>
+
+					</tr>
+				</thead>
+
+
+				<tbody class="item_list">
+				<thead>
+
+				</thead>
+				<tr th:each=" bigCategory  :${bigCategoryList}">
+					<td>    <select id="bigCategory">
+					<a class="item-name" th:text="${bigCategory.name}" th:value="${bigCategory.id}" >Razer
+							BlackWidow Chroma Keyboard</a></select></td>
+					<td><a
+						th:href="@{/categoryDetail/showBigDetail?bigCategoryId=} + ${bigCategory.id}">詳細</a></td>
+					<td>編集</td>
+					<td>削除</td>
+
+				</tr>
+
+				</tbody>
+
+			</table>
+		</div>
+
+		<!-- 中カテゴリー一覧表示 -->
+		<div class="table-responsive" th:if="${mediamCategoryList != null}">
+			<!-- pagination -->
+			<div class="pages">
+				<nav class="page-nav">
+					<ul class="pager">
+						<li class="previous" th:classappend="${page le 1} ? 'disabled'"><a
+							th:href="@{/category/showMediamCategory}+'?page='+${page-1}"
+							th:if="${page > 1}">&larr; prev</a></li>
+						<li class="next"><a
+							th:href="@{/category/showMediamCategory}+'?page='+${page+1}">next
+								&rarr;</a></li>
+					</ul>
+				</nav>
+			</div>
+			<table id="item-table" class="table table-hover table-condensed">
+				<thead>
+					<tr>
+						<th>商品名</th>
+						<th>詳細</th>
+						<th>編集</th>
+						<th>削除</th>
+
+					</tr>
+				</thead>
+
+
+				<tbody class="item_list">
+				<thead>
+
+				</thead>
+				<tr th:each=" mediamCategory  :${mediamCategoryList}">
+					<td><a class="item-name" th:text="${mediamCategory.name}">Razer
+							BlackWidow Chroma Keyboard</a></td>
+					<td><a
+						th:href="@{/categoryDetail/showMediamDetail?mediamCategoryId=} + ${mediamCategory.id}">詳細</a></td>
+					<td>編集</td>
+					<td>削除</td>
+
+				</tr>
+
+				</tbody>
+
+			</table>
+		</div>
+		<!-- 小カテゴリー一覧表示 -->
+		<div class="table-responsive" th:if="${smalCategoryList != null}">
+			<!-- pagination -->
+			<div class="pages">
+				<nav class="page-nav">
+					<ul class="pager">
+						<li class="previous" th:classappend="${page le 1} ? 'disabled'"><a
+							th:href="@{/category/showSmalCategory}+'?page='+${page-1}"
+							th:if="${page > 1}">&larr; prev</a></li>
+						<li class="next"><a
+							th:href="@{/category/showSmalCategory}+'?page='+${page+1}">next
+								&rarr;</a></li>
+					</ul>
+				</nav>
+			</div>
+			<table id="item-table" class="table table-hover table-condensed">
+				<thead>
+					<tr>
+						<th>商品名</th>
+						<th>詳細</th>
+						<th>編集</th>
+						<th>削除</th>
+
+					</tr>
+				</thead>
+
+
+				<tbody class="item_list">
+				<thead>
+
+				</thead>
+				<tr th:each=" smalCategory  :${smalCategoryList}">
+					<td><a
+						th:href="@{/itemDetail/showDetail?ItemId=} + ${smalCategory.id}"
+						class="item-name" th:text="${smalCategory.name}">Razer
+							BlackWidow Chroma Keyboard</a></td>
+					<td>詳細</td>
+					<td>編集</td>
+					<td>削除</td>
+
+				</tr>
+
+				</tbody>
+
+			</table>
+		</div>
+	</div>
+
+
+	<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+	<script src="../js/register_category.js"></script>
+</body>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</html>
